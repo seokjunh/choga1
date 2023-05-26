@@ -43,10 +43,12 @@ const airUtill = {
       //  })
       console.log(airData);
       result = airData.map((v) => ({
-        dateTime: v.dateTime,
-        no2: v.no2Grade,
-        o3: v.o3Grade,
-        co: v.coGrade,
+        sidoName: v.sidoName,
+        stationName: v.stationName,
+        dataTime: v.dataTime,
+        no2_grade: v.no2Grade,
+        o3_grade: v.o3Grade,
+        co_grade: v.coGrade,
       }));
       // airData.forEach((v) => {
       //   if (result[v.category] !== undefined) {
