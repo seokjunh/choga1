@@ -1,12 +1,12 @@
 const Sequelize = require('sequelize');
 
-module.exports = class Locate extends Sequelize.Model {
+module.exports = class AirInfo extends Sequelize.Model {
   static init(sequelize) {
     return super.init({
-      rankid: {
+      rankId: {
         type: Sequelize.INTEGER,
       },
-      locateid: {
+      locateId: {
         type: Sequelize.INTEGER,
       },
       dust: {
@@ -40,8 +40,9 @@ module.exports = class Locate extends Sequelize.Model {
     });
   }
 
-  // static associate(db) {
-  //   db.Airinfo.belongsTo(db.Locate, { foreignKey: { name: 'airinfoId', onDelete: 'SET NULL', as: 'locate' } });
-  // }
-  // static includeAttributes = ['id','title','active','createdAt'];
+  static associate(db) {
+    db.AirInfo.belongsTo(db.Locate, { foreignKey: { name: 'locateId', onDelete: 'SET NULL', as: 'locate' } });
+    // db.Airinfo.belongsTo(db.Rank, { foreignKey: { name: 'locateId', onDelete: 'SET NULL', as: 'rank' } });
+  }
+  static includeAttributes = ['dust', 'no2', 'o3', 'co','checkday']
 };

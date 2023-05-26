@@ -1,8 +1,11 @@
 const express = require('express');
 const logger = require('../lib/logger');
-const departmentRouter = require('./department');
+
 const locateRouter = require('./locate');
 const airInfoRouter = require('./airinfo');
+const rankRouter = require('./rank');
+const actRouter = require('./act');
+const airRouter = require('./air');
 
 const router = express.Router();
 
@@ -23,8 +26,10 @@ router.get('/log-test', (req, res, next) => {
   res.send('log test');
 });
 
-router.use('/departments', departmentRouter);
 router.use('/locates', locateRouter);
 router.use('/airinfos', airInfoRouter);
+router.use('/ranks', rankRouter);
+router.use('/acts', actRouter);
+router.use('/airs', airRouter);
 
 module.exports = router;

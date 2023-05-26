@@ -25,8 +25,8 @@ module.exports = class Locate extends Sequelize.Model {
     });
   }
 
-  // static associate(db) {
-  //   db.Locate.hasMany(db.Airinfo, { foreignKey: { name: 'locateId', onDelete: 'SET NULL', as: 'airinfos' } });
-  // }
-  // static includeAttributes = ['id','title','active','createdAt'];
+  static associate(db) {
+    db.Locate.hasMany(db.AirInfo, { foreignKey: { name: 'locateId', onDelete: 'SET NULL', as: 'airinfos' } });
+  }
+  static includeAttributes = ['name', 'locateX', 'locateY'];
 };

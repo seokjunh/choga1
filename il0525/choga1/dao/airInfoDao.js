@@ -1,4 +1,4 @@
-const { Op } = require('sequelize');
+const { Op, Model } = require('sequelize');
 const { Locate, AirInfo, Rank } = require('../models/index');
 
 const dao = {
@@ -39,9 +39,21 @@ const dao = {
   // 상세정보 조회
   selectInfo(params) {
     return new Promise((resolve, reject) => {
-      AirInfo.findByPk(
-        params.id,
-      ).then((selectedInfo) => {
+      AirInfo.findByPk(params.name, {
+        include: [
+          {
+            model: Locate,
+            as: 'locates',
+            attributes: Locate.includeAttributes,
+          },
+          {
+            model: Rank,
+            as: 'ranks',
+            attributes: Rank.includeAttributes,
+          },
+
+        ],
+      }).then((selectedInfo) => {
         resolve(selectedInfo);
       }).catch((err) => {
         reject(err);
@@ -49,32 +61,33 @@ const dao = {
     });
   },
   // 수정
-  update(params) {
-    return new Promise((resolve, reject) => {
-      AirInfo.update(
-        params,
-        {
-          where: { id: params.id },
-        },
-      ).then(([updated]) => {
-        resolve({ updatedCount: updated });
-      }).catch((err) => {
-        reject(err);
-      });
-    });
-  },
-  // 삭제
-  delete(params) {
-    return new Promise((resolve, reject) => {
-      AirInfo.destroy({
-        where: { id: params.id },
-      }).then((deleted) => {
-        resolve({ deletedCount: deleted });
-      }).catch((err) => {
-        reject(err);
-      });
-    });
-  },
+//   update(params) {
+//     return new Promise((resolve, reject) => {
+//       AirInfo.update(
+//         params,
+//         {
+//           where: { id: params.id },
+//         },
+//       ).then(([updated]) => {
+//         resolve({ updatedCount: updated });
+//       }).catch((err) => {
+//         reject(err);
+//       });
+//     });
+//   },
+//   // 삭제
+//   delete(params) {
+//     return new Promise((resolve, reject) => {
+//       AirInfo.destroy({
+//         where: { id: params.id },
+//       }).then((deleted) => {
+//         resolve({ deletedCount: deleted });
+//       }).catch((err) => {
+//         reject(err);
+//       });
+//     });
+//   },
+// };
 };
 
 module.exports = dao;

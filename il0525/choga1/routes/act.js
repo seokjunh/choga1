@@ -2,29 +2,28 @@ const express = require('express');
 
 const router = express.Router();
 const logger = require('../lib/logger');
-const departmentService = require('../service/departmentService');
+const actService = require('../service/actService');
 
 // 등록
 router.post('/', async (req, res) => {
   try {
     const params = {
-      name: req.body.name,
-      code: req.body.code,
-      description: req.body.description,
+      act: req.body.act,
+      comments: req.body.act,
     };
-    logger.info(`(department.reg.params) ${JSON.stringify(params)}`);
+    logger.info(`(act.reg.params) ${JSON.stringify(params)}`);
 
     // 입력값 null 체크
-    if (!params.name) {
-      const err = new Error('Not allowed null (name)');
+    if (!params.act) {
+      const err = new Error('Not allowed null (act)');
       logger.error(err.toString());
 
       res.status(500).json({ err: err.toString() });
     }
 
     // 비즈니스 로직 호출
-    const result = await departmentService.reg(params);
-    logger.info(`(department.reg.result) ${JSON.stringify(result)}`);
+    const result = await actService.reg(params);
+    logger.info(`(act.reg.result) ${JSON.stringify(result)}`);
 
     // 최종 응답
     res.status(200).json(result);
@@ -37,12 +36,12 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const params = {
-      name: req.query.name,
+      act: req.query.act,
     };
-    logger.info(`(department.list.params) ${JSON.stringify(params)}`);
+    logger.info(`(act.list.params) ${JSON.stringify(params)}`);
 
-    const result = await departmentService.list(params);
-    logger.info(`(department.list.result) ${JSON.stringify(result)}`);
+    const result = await actService.list(params);
+    logger.info(`(act.list.result) ${JSON.stringify(result)}`);
 
     // 최종 응답
     res.status(200).json(result);
@@ -57,10 +56,10 @@ router.get('/:id', async (req, res) => {
     const params = {
       id: req.params.id,
     };
-    logger.info(`(department.info.params) ${JSON.stringify(params)}`);
+    logger.info(`(act.info.params) ${JSON.stringify(params)}`);
 
-    const result = await departmentService.info(params);
-    logger.info(`(department.info.result) ${JSON.stringify(result)}`);
+    const result = await actService.info(params);
+    logger.info(`(act.info.result) ${JSON.stringify(result)}`);
 
     // 최종 응답
     res.status(200).json(result);
@@ -78,10 +77,10 @@ router.put('/:id', async (req, res) => {
       code: req.body.code,
       description: req.body.description,
     };
-    logger.info(`(department.update.params) ${JSON.stringify(params)}`);
+    logger.info(`(act.update.params) ${JSON.stringify(params)}`);
 
-    const result = await departmentService.edit(params);
-    logger.info(`(department.update.result) ${JSON.stringify(result)}`);
+    const result = await actService.edit(params);
+    logger.info(`(act.update.result) ${JSON.stringify(result)}`);
 
     // 최종 응답
     res.status(200).json(result);
@@ -96,10 +95,10 @@ router.delete('/:id', async (req, res) => {
     const params = {
       id: req.params.id,
     };
-    logger.info(`(department.delete.params) ${JSON.stringify(params)}`);
+    logger.info(`(act.delete.params) ${JSON.stringify(params)}`);
 
-    const result = await departmentService.delete(params);
-    logger.info(`(department.delete.result) ${JSON.stringify(result)}`);
+    const result = await actService.delete(params);
+    logger.info(`(act.delete.result) ${JSON.stringify(result)}`);
 
     // 최종 응답
     res.status(200).json(result);

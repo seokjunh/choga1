@@ -16,7 +16,7 @@ const dao = {
   selectList(params) {
     // where 검색 조건
     const setQuery = {};
-    if (params.name) {
+    if (params.id) {
       setQuery.where = {
         ...setQuery.where,
         name: { [Op.like]: `%${params.name}%` }, // like검색
@@ -40,7 +40,8 @@ const dao = {
   selectInfo(params) {
     return new Promise((resolve, reject) => {
       Locate.findByPk(
-        params.id,
+        params.locateX,
+        params.locateY,
       ).then((selectedInfo) => {
         resolve(selectedInfo);
       }).catch((err) => {
@@ -48,33 +49,33 @@ const dao = {
       });
     });
   },
-  // 수정
-  update(params) {
-    return new Promise((resolve, reject) => {
-      Locate.update(
-        params,
-        {
-          where: { id: params.id },
-        },
-      ).then(([updated]) => {
-        resolve({ updatedCount: updated });
-      }).catch((err) => {
-        reject(err);
-      });
-    });
-  },
-  // 삭제
-  delete(params) {
-    return new Promise((resolve, reject) => {
-      Locate.destroy({
-        where: { id: params.id },
-      }).then((deleted) => {
-        resolve({ deletedCount: deleted });
-      }).catch((err) => {
-        reject(err);
-      });
-    });
-  },
+  // // 수정
+  // update(params) {
+  //   return new Promise((resolve, reject) => {
+  //     Locate.update(
+  //       params,
+  //       {
+  //         where: { name: params.name },
+  //       },
+  //     ).then(([updated]) => {
+  //       resolve({ updatedCount: updated });
+  //     }).catch((err) => {
+  //       reject(err);
+  //     });
+  //   });
+  // },
+  // // 삭제
+  // delete(params) {
+  //   return new Promise((resolve, reject) => {
+  //     Locate.destroy({
+  //       where: { name: params.name },
+  //     }).then((deleted) => {
+  //       resolve({ deletedCount: deleted });
+  //     }).catch((err) => {
+  //       reject(err);
+  //     });
+  //   });
+  // },
 };
 
 module.exports = dao;

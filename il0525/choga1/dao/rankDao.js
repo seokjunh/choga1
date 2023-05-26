@@ -1,34 +1,49 @@
 const { Op } = require('sequelize');
-const { Department } = require('../models/index');
+const { Rank, Airinfo, Act } = require('../models/index');
+;
 
 const dao = {
-  // 등록
   insert(params) {
     return new Promise((resolve, reject) => {
-      Department.create(params).then((inserted) => {
+      Rank.create(params).then((inserted) => {
         resolve(inserted);
       }).catch((err) => {
         reject(err);
       });
     });
   },
-  // 리스트 조회
   selectList(params) {
     // where 검색 조건
     const setQuery = {};
+
+    if (params.id) {
+      setQuery.where = {
+        ...setQuery.where,
+        id: params.id, // '=' 검색
+
+
+      };
+    }
     if (params.name) {
       setQuery.where = {
         ...setQuery.where,
         name: { [Op.like]: `%${params.name}%` }, // like검색
       };
     }
-
-    // order by 정렬 조건
     setQuery.order = [['id', 'DESC']];
-
     return new Promise((resolve, reject) => {
-      Department.findAndCountAll({
+      // Rank.findAll
+      Rank.findAndCountAll({
         ...setQuery,
+        // attributes: ['id', 'name', 'code'],
+        include: [
+          {
+            model: Rank,
+            as: 'Rank',
+            attributes: Airinfo.includeAttributes,
+            // static includeAttributes = ['dust', 'no2', 'o3', 'co','checkday']
+          },
+        ]
       }).then((selectedList) => {
         resolve(selectedList);
       }).catch((err) => {
@@ -36,11 +51,20 @@ const dao = {
       });
     });
   },
-  // 상세정보 조회
   selectInfo(params) {
     return new Promise((resolve, reject) => {
-      Department.findByPk(
-        params.id,
+      // Rank.findAll
+      Rank.findByPk(
+        params.id,{
+        include: [
+          {
+            model: Post,
+            as: 'Posts',
+            attributes: Post.includeAttributes,
+
+          },
+        ]
+      }
       ).then((selectedInfo) => {
         resolve(selectedInfo);
       }).catch((err) => {
@@ -48,10 +72,10 @@ const dao = {
       });
     });
   },
-  // 수정
   update(params) {
     return new Promise((resolve, reject) => {
-      Department.update(
+      // Rank.findAll
+      Rank.update(
         params,
         {
           where: { id: params.id },
@@ -63,12 +87,14 @@ const dao = {
       });
     });
   },
-  // 삭제
   delete(params) {
     return new Promise((resolve, reject) => {
-      Department.destroy({
-        where: { id: params.id },
-      }).then((deleted) => {
+      // Rank.findAll
+      Rank.destroy(
+        {
+          where: { id: params.id },
+        },
+      ).then(([deleted]) => {
         resolve({ deletedCount: deleted });
       }).catch((err) => {
         reject(err);

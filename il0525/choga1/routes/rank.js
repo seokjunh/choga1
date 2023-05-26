@@ -2,31 +2,27 @@ const express = require('express');
 
 const router = express.Router();
 const logger = require('../lib/logger');
-const airInfoService = require('../service/airInfoService');
+const rankService = require('../service/rankService');
 
 // 등록
 router.post('/', async (req, res) => {
   try {
     const params = {
-      dust: req.body.dust,
-      no2: req.body.no2,
-      o3: req.body.o3,
-      co: req.body.co,
-      checkday: req.body.checkday,
+      rank: req.body.rank,
     };
-    logger.info(`(airInfo.reg.params) ${JSON.stringify(params)}`);
+    logger.info(`(rank.reg.params) ${JSON.stringify(params)}`);
 
     // 입력값 null 체크
-    if (!params.dust) {
-      const err = new Error('Not allowed null (dust)');
+    if (!params.rank) {
+      const err = new Error('Not allowed null (rank)');
       logger.error(err.toString());
 
       res.status(500).json({ err: err.toString() });
     }
 
     // 비즈니스 로직 호출
-    const result = await airInfoService.reg(params);
-    logger.info(`(airInfo.reg.result) ${JSON.stringify(result)}`);
+    const result = await rankService.reg(params);
+    logger.info(`(rank.reg.result) ${JSON.stringify(result)}`);
 
     // 최종 응답
     res.status(200).json(result);
@@ -39,12 +35,12 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const params = {
-      name: req.query.name,
+      rank: req.query.rank,
     };
-    logger.info(`(airInfo.list.params) ${JSON.stringify(params)}`);
+    logger.info(`(rank.list.params) ${JSON.stringify(params)}`);
 
-    const result = await airInfoService.list(params);
-    logger.info(`(airInfo.list.result) ${JSON.stringify(result)}`);
+    const result = await rankService.list(params);
+    logger.info(`(rank.list.result) ${JSON.stringify(result)}`);
 
     // 최종 응답
     res.status(200).json(result);
@@ -54,18 +50,15 @@ router.get('/', async (req, res) => {
 });
 
 // 상세정보 조회
-router.get('/:rank', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const params = {
-      dust: req.params.dust,
-      no2: req.params.no2,
-      o3: req.params.o3,
-      co: req.params.co,
+      id: req.params.id,
     };
-    logger.info(`(airInfo.info.params) ${JSON.stringify(params)}`);
+    logger.info(`(rank.info.params) ${JSON.stringify(params)}`);
 
-    const result = await airInfoService.info(params);
-    logger.info(`(airInfo.info.result) ${JSON.stringify(result)}`);
+    const result = await rankService.info(params);
+    logger.info(`(rank.info.result) ${JSON.stringify(result)}`);
 
     // 최종 응답
     res.status(200).json(result);
@@ -83,10 +76,10 @@ router.put('/:id', async (req, res) => {
       code: req.body.code,
       description: req.body.description,
     };
-    logger.info(`(airInfo.update.params) ${JSON.stringify(params)}`);
+    logger.info(`(rank.update.params) ${JSON.stringify(params)}`);
 
-    const result = await airInfoService.edit(params);
-    logger.info(`(airInfo.update.result) ${JSON.stringify(result)}`);
+    const result = await rankService.edit(params);
+    logger.info(`(rank.update.result) ${JSON.stringify(result)}`);
 
     // 최종 응답
     res.status(200).json(result);
@@ -101,10 +94,10 @@ router.delete('/:id', async (req, res) => {
     const params = {
       id: req.params.id,
     };
-    logger.info(`(airInfo.delete.params) ${JSON.stringify(params)}`);
+    logger.info(`(rank.delete.params) ${JSON.stringify(params)}`);
 
-    const result = await airInfoService.delete(params);
-    logger.info(`(airInfo.delete.result) ${JSON.stringify(result)}`);
+    const result = await rankService.delete(params);
+    logger.info(`(rank.delete.result) ${JSON.stringify(result)}`);
 
     // 최종 응답
     res.status(200).json(result);

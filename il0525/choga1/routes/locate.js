@@ -52,10 +52,11 @@ router.get('/', async (req, res) => {
 });
 
 // 상세정보 조회
-router.get('/:id', async (req, res) => {
+router.get('/:locateX/locateY', async (req, res) => {
   try {
     const params = {
-      id: req.params.id,
+      locateX: req.params.locateX,
+      locateY: req.params.locateY,
     };
     logger.info(`(locate.info.params) ${JSON.stringify(params)}`);
 
@@ -70,13 +71,12 @@ router.get('/:id', async (req, res) => {
 });
 
 // 수정
-router.put('/:id', async (req, res) => {
+router.put('/:name', async (req, res) => {
   try {
     const params = {
-      id: req.params.id,
       name: req.body.name,
-      code: req.body.code,
-      description: req.body.description,
+      locateX: req.body.locateX,
+      locateY: req.body.locateY,
     };
     logger.info(`(locate.update.params) ${JSON.stringify(params)}`);
 
@@ -91,10 +91,10 @@ router.put('/:id', async (req, res) => {
 });
 
 // 삭제
-router.delete('/:id', async (req, res) => {
+router.delete('/:name', async (req, res) => {
   try {
     const params = {
-      id: req.params.id,
+      name: req.params.name,
     };
     logger.info(`(locate.delete.params) ${JSON.stringify(params)}`);
 

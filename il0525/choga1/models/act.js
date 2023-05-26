@@ -1,10 +1,16 @@
 const Sequelize = require('sequelize');
 
-module.exports = class Rank extends Sequelize.Model {
+module.exports = class Act extends Sequelize.Model {
   static init(sequelize) {
     return super.init({
-      rank: {
+      rankid: {
         type: Sequelize.INTEGER,
+      },
+      name: {
+        type: Sequelize.INTEGER,
+      },
+      comments: {
+        type: Sequelize.STRING(255),
       },
     }, {
       sequelize,
@@ -17,9 +23,6 @@ module.exports = class Rank extends Sequelize.Model {
   }
 
   static associate(db) {
-    db.Rank.hasMany(db.AirInfo, { foreignKey: { name: 'rankId', onDelete: 'SET NULL', as: 'Airinfos' } });
-    db.Rank.hasMany(db.Act, { foreignKey: { name: 'rankId', onDelete: 'SET NULL', as: 'Acts' } });
+    db.Act.belongsTo(db.Rank, { foreignKey: { name: 'rankId', onDelete: 'SET NULL', as: 'rank' } });
   }
-
-  static includeAttributes = ['great', 'good', 'bad'];
 };
